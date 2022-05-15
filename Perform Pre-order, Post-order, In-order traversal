@@ -19,6 +19,8 @@ insert(root,720)
 insert(root,980)
 insert(root,486)
 insert(root,852)
+
+#dfs
 def inorder(root):
     if root is not None:
         inorder(root.left)
@@ -41,3 +43,107 @@ print("___________")
 preorder(root)
 print("___________")
 preorder(root)
+
+#find leaf nodes
+def leafNode(root):
+    if root is not None:
+        if root.left is None and root.right is None:
+            print(root.data)
+        leafNode(root.left)
+        leafNode(root.right)
+leafNode(root)    
+
+#sum of leaf nodes
+S=0
+def SumleafNode(root):
+    if root is not None:
+        if root.left is None and root.right is None:
+            global S
+            S=S+int(root.data)
+        SumleafNode(root.left)
+        SumleafNode(root.right)
+    return S
+SumleafNode(root)    
+
+#sum of all nodes of the given perfect binary tree
+S=0
+def sumOFnodes(root):
+    if root is not None:
+        sumOFnodes(root.left)
+        global S
+        S=S+int(root.data)
+        sumOFnodes(root.right)
+    return S
+sumOFnodes(root)
+
+#bfs
+def bfs(root):
+    queue = []
+    if root is None:
+        return
+    queue.append(root)
+    while(len(queue)>0):
+        popped_node = queue.pop(0)
+        print(popped_node.data)
+        if popped_node.left is not None:
+            queue.append(popped_node.left)
+        if popped_node.right is not None:
+            queue.append(popped_node.right)
+        
+bfs(root)
+
+# Count subtress that sum up to a given value x in a binary tree
+def count(root,x):
+    if root is None:
+        return [0, 0]
+       
+    l,r = count(root.left, x), count(root.right, x)
+    if root.data+l[0]+r[0] == x:
+        return [root.data+l[0]+r[0], 1+l[1]+r[1]]
+    else:
+        return [root.data+l[0]+r[0], l[1]+r[1]]
+count(root,121)
+
+# Find maximum level sum in Binary Tree
+def maxLVLsum(root):    
+    if root is None:
+        return 
+    queue = []    
+    result=root.data
+    queue.append(root)
+    while(len(queue)>0):
+        count=len(queue)
+        Sum=0
+        while count!=0:
+            popped_node = queue.pop(0)
+
+            if popped_node.left is not None:
+                queue.append(popped_node.left)            
+            if popped_node.right is not None:
+                queue.append(popped_node.right)
+            count-=1
+        result=max(result,Sum)
+    return  result
+
+maxLVLsum(root)
+
+#Print the nodes at odd levels of a tree
+def oddLVLnodes(root):
+    if root is None:
+        return
+    queue = []
+    isodd=False
+    queue.append(root)
+    while(len(queue)>0):
+        count=len(queue)
+        while count>0:
+            popped_node = queue.pop(0)
+            if isodd:
+                print(popped_node.data)
+            if popped_node.left is not None:
+                queue.append(popped_node.left)            
+            if popped_node.right is not None:
+                queue.append(popped_node.right)
+            count-=1
+        isodd=not(isodd)
+oddLVLnodes(root)    
